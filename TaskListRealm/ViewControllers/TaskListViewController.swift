@@ -17,6 +17,12 @@ class TaskListViewController: UITableViewController {
         createTempData()
         taskLists = StorageManager.shared.realm.objects(TaskList.self)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
 
     // MARK: - Table view data source
 
@@ -44,7 +50,7 @@ class TaskListViewController: UITableViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
-        
+        showAlert()
     }
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
@@ -64,9 +70,16 @@ extension TaskListViewController {
         let alert = UIAlertController.createAlertController(withTittle: "New List", andMessage: "Please insert new value")
         
         alert.action { newValue in
-            
+            self.save(newValue)
         }
         
         present(alert, animated: true)
+    }
+    
+    private func save(_ taskList: String) {
+        let taskList = TaskList(value: [taskList])
+        StorageManager.shared.save(taskList)
+        let rowIndex = IndexPath(row: taskLists.index(of: taskList) ?? 0, section: 0)
+        tableView.insertRows(at: [rowIndex], with: .automatic)
     }
 }
