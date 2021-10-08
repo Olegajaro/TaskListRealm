@@ -50,6 +50,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="sgq-qe-hxT" kind="show" id="L7e-8M-Fdp"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -61,7 +64,6 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4bX-ab-rQa">
                             <connections>
                                 <action selector="addButtonPressed:" destination="AVl-OO-nDM" id="feh-3r-e5Q"/>
-                                <segue destination="sgq-qe-hxT" kind="show" id="7GF-Ae-6dM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
