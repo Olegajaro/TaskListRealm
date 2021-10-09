@@ -6,6 +6,7 @@
 //
 
 import RealmSwift
+import Foundation
 
 class TasksViewController: UITableViewController {
     
@@ -57,7 +58,7 @@ class TasksViewController: UITableViewController {
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
-        
+
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             StorageManager.shared.delete(task)
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -72,13 +73,21 @@ class TasksViewController: UITableViewController {
         
         let doneAction = UIContextualAction(style: .normal, title: "Done") { _, _, isDone in
             StorageManager.shared.done(task)
-            tableView.reloadSections([0, 1], with: .automatic)
+            tableView.performBatchUpdates({
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.insertRows(at: [IndexPath(item: indexPath.row, section: 1)], with: .automatic)
+//                tableView.reloadSections([0, 1], with: .automatic)
+            }, completion: nil)
             isDone(true)
         }
         
         let undoneAction = UIContextualAction(style: .normal, title: "Undone") { _, _, isDone in
             StorageManager.shared.undone(task)
-            tableView.reloadSections([0, 1], with: .automatic)
+            tableView.performBatchUpdates({
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.insertRows(at: [IndexPath(item: indexPath.row, section: 0)], with: .automatic)
+//                tableView.reloadSections([0, 1], with: .automatic)
+            }, completion: nil)
             isDone(true)
         }
         
