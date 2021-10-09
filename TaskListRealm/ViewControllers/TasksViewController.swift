@@ -63,7 +63,7 @@ extension TasksViewController {
     
     private func showAlert() {
         
-        let alert  = UIAlertController.createAlertController(withTittle: "New Task", andMessage: "What do you want to do?")
+        let alert  = AlertController.createAlertController(withTittle: "New Task", andMessage: "What do you want to do?")
         
         alert.action { newValue, note in
             self.saveTask(withName: newValue, andNote: note)

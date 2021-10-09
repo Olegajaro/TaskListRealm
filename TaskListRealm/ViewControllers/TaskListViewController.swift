@@ -6,6 +6,7 @@
 //
 
 import RealmSwift
+import Combine
 
 class TaskListViewController: UITableViewController {
     
@@ -16,12 +17,14 @@ class TaskListViewController: UITableViewController {
 
         createTempData()
         taskLists = StorageManager.shared.realm.objects(TaskList.self)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
+        navigationItem.leftBarButtonItem = editButtonItem
     }
 
     // MARK: - Table view data source
@@ -42,6 +45,35 @@ class TaskListViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - Table view delegate
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let taskList = taskLists[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            StorageManager.shared.delete(taskList)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            self.showAlert(with: taskList) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+            isDone(true)
+        }
+        
+        let doneAction = UIContextualAction(style: .normal, title: "Done") { _, _, isDone in
+            StorageManager.shared.done(taskList)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = .orange
+        doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        
+        return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         guard let tasksVC = segue.destination as? TasksViewController else { return }
@@ -54,7 +86,12 @@ class TaskListViewController: UITableViewController {
     }
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
-        
+        switch sender.selectedSegmentIndex {
+        case 0 : taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
+        case 1: taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
+        default:
+            break
+        }
     }
     
     private func createTempData() {
@@ -66,11 +103,16 @@ class TaskListViewController: UITableViewController {
 
 extension TaskListViewController {
     
-    private func showAlert() {
-        let alert = UIAlertController.createAlertController(withTittle: "New List", andMessage: "Please insert new value")
+    private func showAlert(with taskList: TaskList? = nil, completion: (() -> Void)? = nil) {
+        let alert = AlertController.createAlertController(withTittle: "New List", andMessage: "Please insert new value")
         
-        alert.action { newValue in
-            self.save(newValue)
+        alert.action(with: taskList) { newValue in
+            if let taskList = taskList, let completion = completion {
+                StorageManager.shared.edit(taskList, newValue: newValue)
+                completion()
+            } else {
+                self.save(newValue)
+            }
         }
         
         present(alert, animated: true)
