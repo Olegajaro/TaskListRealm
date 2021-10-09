@@ -54,6 +54,27 @@ class TasksViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - Table view delegate
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            StorageManager.shared.delete(task)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            self.showAlert(with: task) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = #colorLiteral(red: 0.9144874811, green: 0.4221930504, blue: 0, alpha: 1)
+        
+        return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
+    }
+    
     @objc private func addButtonPressed() {
         showAlert()
     }
@@ -61,12 +82,17 @@ class TasksViewController: UITableViewController {
 
 extension TasksViewController {
     
-    private func showAlert() {
+    private func showAlert(with task: Task? = nil, completion: (() -> Void)? = nil) {
         
         let alert  = AlertController.createAlertController(withTittle: "New Task", andMessage: "What do you want to do?")
         
-        alert.action { newValue, note in
-            self.saveTask(withName: newValue, andNote: note)
+        alert.action(with: task) { newValue, note in
+            if let task = task, let completion = completion {
+                StorageManager.shared.edit(task, newValue: newValue)
+                completion()
+            } else {
+                self.saveTask(withName: newValue, andNote: note)
+            }
         }
     
         present(alert, animated: true)
