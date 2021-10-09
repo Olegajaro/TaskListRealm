@@ -17,7 +17,6 @@ class TaskListViewController: UITableViewController {
 
         createTempData()
         taskLists = StorageManager.shared.realm.objects(TaskList.self)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,8 +91,12 @@ class TaskListViewController: UITableViewController {
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
-        case 0 : taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
-        case 1: taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
+        case 0 :
+            taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
+            tableView.reloadData()
+        case 1:
+            taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
+            tableView.reloadData()
         default:
             break
         }
@@ -106,6 +109,7 @@ class TaskListViewController: UITableViewController {
     }
 }
 
+// MARK: - AlertController
 extension TaskListViewController {
     
     private func showAlert(with taskList: TaskList? = nil, completion: (() -> Void)? = nil) {
