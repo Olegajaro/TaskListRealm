@@ -59,10 +59,22 @@ class StorageManager {
         }
     }
     
-    func edit(_ task: Task, newValue: String) {
+    func edit(_ task: Task, newTask: String, newNote: String) {
         write {
-            task.name = newValue
-            task.note = newValue
+            task.name = newTask
+            task.note = newNote
+        }
+    }
+    
+    func done(_ task: Task) {
+        write {
+            task.isComplete = true
+        }
+    }
+    
+    func undone(_ task: Task) {
+        write {
+            task.isComplete = false
         }
     }
     

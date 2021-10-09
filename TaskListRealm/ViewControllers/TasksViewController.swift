@@ -70,9 +70,27 @@ class TasksViewController: UITableViewController {
             isDone(true)
         }
         
-        editAction.backgroundColor = #colorLiteral(red: 0.9144874811, green: 0.4221930504, blue: 0, alpha: 1)
+        let doneAction = UIContextualAction(style: .normal, title: "Done") { _, _, isDone in
+            StorageManager.shared.done(task)
+            tableView.reloadSections([0, 1], with: .automatic)
+            isDone(true)
+        }
         
-        return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
+        let undoneAction = UIContextualAction(style: .normal, title: "Undone") { _, _, isDone in
+            StorageManager.shared.undone(task)
+            tableView.reloadSections([0, 1], with: .automatic)
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = #colorLiteral(red: 0.9144874811, green: 0.4221930504, blue: 0, alpha: 1)
+        doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        undoneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        
+        if indexPath .section == 0 {
+            return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+        } else {
+            return UISwipeActionsConfiguration(actions: [undoneAction, editAction, deleteAction])
+        }
     }
     
     @objc private func addButtonPressed() {
@@ -80,6 +98,7 @@ class TasksViewController: UITableViewController {
     }
 }
 
+// MARK: - AlertController
 extension TasksViewController {
     
     private func showAlert(with task: Task? = nil, completion: (() -> Void)? = nil) {
@@ -88,7 +107,7 @@ extension TasksViewController {
         
         alert.action(with: task) { newValue, note in
             if let task = task, let completion = completion {
-                StorageManager.shared.edit(task, newValue: newValue)
+                StorageManager.shared.edit(task, newTask: newValue, newNote: note)
                 completion()
             } else {
                 self.saveTask(withName: newValue, andNote: note)
