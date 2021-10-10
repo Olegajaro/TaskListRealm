@@ -28,12 +28,22 @@ class TaskListViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         taskLists.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskListCell", for: indexPath)
+    override func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "TaskListCell",
+            for: indexPath
+        )
         let taskList = taskLists[indexPath.row]
         var content = cell.defaultContentConfiguration()
         
@@ -50,23 +60,35 @@ class TaskListViewController: UITableViewController {
     }
     
     // MARK: - Table view delegate
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         
         let taskList = taskLists[indexPath.row]
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: "Delete"
+        ) { _, _, _ in
             StorageManager.shared.delete(taskList)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+        let editAction = UIContextualAction(
+            style: .normal,
+            title: "Edit"
+        ) { _, _, isDone in
             self.showAlert(with: taskList) {
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             isDone(true)
         }
         
-        let doneAction = UIContextualAction(style: .normal, title: "Done") { _, _, isDone in
+        let doneAction = UIContextualAction(
+            style: .normal,
+            title: "Done"
+        ) { _, _, isDone in
             StorageManager.shared.done(taskList)
             tableView.reloadRows(at: [indexPath], with: .automatic)
             isDone(true)
@@ -75,7 +97,9 @@ class TaskListViewController: UITableViewController {
         editAction.backgroundColor = #colorLiteral(red: 0.9144874811, green: 0.4221930504, blue: 0, alpha: 1)
         doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         
-        return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+        return UISwipeActionsConfiguration(
+            actions: [doneAction, editAction, deleteAction]
+        )
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -93,13 +117,12 @@ class TaskListViewController: UITableViewController {
         switch sender.selectedSegmentIndex {
         case 0 :
             taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
-            tableView.reloadData()
         case 1:
             taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
-            tableView.reloadData()
         default:
             break
         }
+        tableView.reloadData()
     }
     
     private func createTempData() {
@@ -112,8 +135,14 @@ class TaskListViewController: UITableViewController {
 // MARK: - AlertController
 extension TaskListViewController {
     
-    private func showAlert(with taskList: TaskList? = nil, completion: (() -> Void)? = nil) {
-        let alert = AlertController.createAlertController(withTittle: "New List", andMessage: "Please insert new value")
+    private func showAlert(
+        with taskList: TaskList? = nil,
+        completion: (() -> Void)? = nil
+    ) {
+        let alert = AlertController.createAlertController(
+            withTittle: "New List",
+            andMessage: "Please insert new value"
+        )
         
         alert.action(with: taskList) { newValue in
             if let taskList = taskList, let completion = completion {
@@ -130,7 +159,10 @@ extension TaskListViewController {
     private func save(_ taskList: String) {
         let taskList = TaskList(value: [taskList])
         StorageManager.shared.save(taskList)
-        let rowIndex = IndexPath(row: taskLists.index(of: taskList) ?? 0, section: 0)
+        let rowIndex = IndexPath(
+            row: taskLists.index(of: taskList) ?? 0,
+            section: 0
+        )
         tableView.insertRows(at: [rowIndex], with: .automatic)
     }
 }

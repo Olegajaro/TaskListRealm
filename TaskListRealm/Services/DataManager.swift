@@ -20,7 +20,10 @@ class DataManager {
             let shoppingList = TaskList()
             shoppingList.name = "Shopping List"
             
-            let moviesList = TaskList(value: ["Movies List", Date(), [["Best Film Ever"], ["The Best Of The Best", "Must Have", Date(), true]]])
+            let moviesList = TaskList(value: ["Movies List", Date(), [
+                ["Best Film Ever"],
+                ["The Best Of The Best", "Must Have", Date(), true]
+            ]])
             
             let milk = Task()
             milk.name = "Milk"

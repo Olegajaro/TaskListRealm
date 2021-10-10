@@ -11,7 +11,10 @@ class  AlertController: UIAlertController {
     
     var doneButton = "Save"
     
-    static func createAlertController(withTittle title: String, andMessage message: String) -> AlertController {
+    static func createAlertController(
+        withTittle title: String,
+        andMessage message: String
+    ) -> AlertController {
         AlertController(title: title, message: message, preferredStyle: .alert)
     }
     
