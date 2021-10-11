@@ -75,6 +75,8 @@ class TasksViewController: UITableViewController {
     ) -> UISwipeActionsConfiguration? {
         let task = indexPath.section == 0 ? currentTasks[indexPath.row] :
         completedTasks[indexPath.row]
+        
+        let title = indexPath.section == 0 ? "Done" : "Undone"
 
         let deleteAction = UIContextualAction(
             style: .destructive,
@@ -96,41 +98,28 @@ class TasksViewController: UITableViewController {
         
         let doneAction = UIContextualAction(
             style: .normal,
-            title: "Done"
+            title: title
         ) { _, _, isDone in
-            StorageManager.shared.done(task)
-            tableView.moveRow(
-                at: IndexPath(item: indexPath.row, section: 0),
-                to: IndexPath(item: 0, section: 1)
-            )
-            isDone(true)
-        }
-        
-        let undoneAction = UIContextualAction(
-            style: .normal,
-            title: "Undone"
-        ) { _, _, isDone in
-            StorageManager.shared.undone(task)
-            tableView.moveRow(
-                at: IndexPath(item: indexPath.row, section: 1),
-                to: IndexPath(item: 0, section: 0)
-            )
+            StorageManager.shared.changeStatus(task)
+            if indexPath.section == 0 {
+                tableView.moveRow(
+                    at: IndexPath(row: indexPath.row, section: 0),
+                    to: IndexPath(row: 0, section: 1)
+                )
+            } else {
+                tableView.moveRow(
+                    at: IndexPath(row: indexPath.row, section: 1),
+                    to: IndexPath(row: 0, section: 0))
+            }
             isDone(true)
         }
         
         editAction.backgroundColor = #colorLiteral(red: 0.9144874811, green: 0.4221930504, blue: 0, alpha: 1)
         doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-        undoneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-        
-        if indexPath .section == 0 {
+
             return UISwipeActionsConfiguration(
                 actions: [doneAction, editAction, deleteAction]
             )
-        } else {
-            return UISwipeActionsConfiguration(
-                actions: [undoneAction, editAction, deleteAction]
-            )
-        }
     }
     
     @objc private func addButtonPressed() {
@@ -145,8 +134,12 @@ extension TasksViewController {
         with task: Task? = nil,
         completion: (() -> Void)? = nil
     ) {
+        var title = "New Task"
+        
+        if task != nil { title = "Update Task" }
+        
         let alert  = AlertController.createAlertController(
-            withTittle: "New Task",
+            withTittle: title,
             andMessage: "What do you want to do?"
         )
         

@@ -114,14 +114,9 @@ class TaskListViewController: UITableViewController {
     }
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0 :
-            taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
-        case 1:
-            taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
-        default:
-            break
-        }
+        taskLists = sender.selectedSegmentIndex == 0 ?
+        taskLists.sorted(byKeyPath: "date", ascending: true) :
+        taskLists.sorted(byKeyPath: "name", ascending: true)
         tableView.reloadData()
     }
     
@@ -139,8 +134,12 @@ extension TaskListViewController {
         with taskList: TaskList? = nil,
         completion: (() -> Void)? = nil
     ) {
+        var title = "New List"
+        
+        if taskList != nil { title = "Update List"}
+        
         let alert = AlertController.createAlertController(
-            withTittle: "New List",
+            withTittle: title,
             andMessage: "Please insert new value"
         )
         
