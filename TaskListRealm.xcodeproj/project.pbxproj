@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		103DE1D72791A4AC00A74F6A /* Tasks1.png in Resources */ = {isa = PBXBuildFile; fileRef = 103DE1D32791A4AB00A74F6A /* Tasks1.png */; };
-		103DE1D82791A4AC00A74F6A /* TaskList1.png in Resources */ = {isa = PBXBuildFile; fileRef = 103DE1D42791A4AC00A74F6A /* TaskList1.png */; };
-		103DE1D92791A4AC00A74F6A /* Tasks2.png in Resources */ = {isa = PBXBuildFile; fileRef = 103DE1D52791A4AC00A74F6A /* Tasks2.png */; };
-		103DE1DA2791A4AC00A74F6A /* TaskList2.png in Resources */ = {isa = PBXBuildFile; fileRef = 103DE1D62791A4AC00A74F6A /* TaskList2.png */; };
 		10FD537627108174006F9529 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD537527108174006F9529 /* AppDelegate.swift */; };
 		10FD537827108174006F9529 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD537727108174006F9529 /* SceneDelegate.swift */; };
 		10FD537D27108174006F9529 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10FD537B27108174006F9529 /* Main.storyboard */; };
@@ -28,10 +24,6 @@
 
 /* Begin PBXFileReference section */
 		07AE0B170A09D0DEC7F0BFA9 /* Pods-TaskListRealm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskListRealm.debug.xcconfig"; path = "Target Support Files/Pods-TaskListRealm/Pods-TaskListRealm.debug.xcconfig"; sourceTree = "<group>"; };
-		103DE1D32791A4AB00A74F6A /* Tasks1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tasks1.png; sourceTree = "<group>"; };
-		103DE1D42791A4AC00A74F6A /* TaskList1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TaskList1.png; sourceTree = "<group>"; };
-		103DE1D52791A4AC00A74F6A /* Tasks2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tasks2.png; sourceTree = "<group>"; };
-		103DE1D62791A4AC00A74F6A /* TaskList2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TaskList2.png; sourceTree = "<group>"; };
 		10FD537227108174006F9529 /* TaskListRealm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskListRealm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10FD537527108174006F9529 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10FD537727108174006F9529 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,21 +63,9 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		1082B23A279055DA00F53678 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				103DE1D42791A4AC00A74F6A /* TaskList1.png */,
-				103DE1D62791A4AC00A74F6A /* TaskList2.png */,
-				103DE1D32791A4AB00A74F6A /* Tasks1.png */,
-				103DE1D52791A4AC00A74F6A /* Tasks2.png */,
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
 		10FD536927108174006F9529 = {
 			isa = PBXGroup;
 			children = (
-				1082B23A279055DA00F53678 /* Images */,
 				10FD5389271081C2006F9529 /* .gitignore */,
 				10FD537427108174006F9529 /* TaskListRealm */,
 				10FD537327108174006F9529 /* Products */,
@@ -214,11 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10FD538A271081C2006F9529 /* .gitignore in Resources */,
-				103DE1DA2791A4AC00A74F6A /* TaskList2.png in Resources */,
 				10FD538227108175006F9529 /* LaunchScreen.storyboard in Resources */,
-				103DE1D82791A4AC00A74F6A /* TaskList1.png in Resources */,
-				103DE1D72791A4AC00A74F6A /* Tasks1.png in Resources */,
-				103DE1D92791A4AC00A74F6A /* Tasks2.png in Resources */,
 				10FD537F27108175006F9529 /* Assets.xcassets in Resources */,
 				10FD537D27108174006F9529 /* Main.storyboard in Resources */,
 			);
