@@ -7,7 +7,7 @@
 
 import UIKit
 
-class  AlertController: UIAlertController {
+class AlertController: UIAlertController {
     
     var doneButton = "Save"
     

@@ -6,7 +6,7 @@
 //
 
 import RealmSwift
-import Combine
+//import Combine
 
 class TaskListViewController: UITableViewController {
     
@@ -114,9 +114,10 @@ class TaskListViewController: UITableViewController {
     }
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
-        taskLists = sender.selectedSegmentIndex == 0 ?
-        taskLists.sorted(byKeyPath: "date", ascending: true) :
-        taskLists.sorted(byKeyPath: "name", ascending: true)
+        taskLists = sender.selectedSegmentIndex == 0
+        ? taskLists.sorted(byKeyPath: "date", ascending: true)
+        : taskLists.sorted(byKeyPath: "name", ascending: true)
+        
         tableView.reloadData()
     }
     
@@ -136,7 +137,7 @@ extension TaskListViewController {
     ) {
         var title = "New List"
         
-        if taskList != nil { title = "Update List"}
+        if taskList != nil { title = "Update List" }
         
         let alert = AlertController.createAlertController(
             withTittle: title,
